@@ -12,6 +12,7 @@ const AlertSystem = () => {
         { latitude: 10.8555, longitude: 76.2601, radius: 1000, type: 'animal', notified: false },
         { latitude: 10.142303718438948, longitude: 76.2241480776085, radius: 1000, type: 'animal', notified: false },
         { latitude: 10.079115614479509, longitude: 76.27394290945765, radius: 1000, type: 'animal', notified: false },
+        { latitude: 10.229831778129121, longitude: 76.39922305889426, radius: 1000, type: 'animal', notified: false },
         { latitude: 10.8555, longitude: 76.2701, radius: 1000, type: 'construction', notified: false },
         { latitude: 10.8655, longitude: 76.2751, radius: 1000, type: 'construction', notified: false },
     ]);
@@ -92,6 +93,7 @@ const AlertSystem = () => {
         { latitude: 10.8555, longitude: 76.2601, type: 'animal' },
         { latitude: 10.142303718438948, longitude: 76.2241480776085, type: 'animal' },
         { latitude: 10.079115614479509, longitude: 76.27394290945765, type: 'animal' },
+        { latitude: 10.229831778129121, longitude: 76.39922305889426, type: 'animal' },
     ];
 
     const constructionData = [
