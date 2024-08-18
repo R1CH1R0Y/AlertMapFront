@@ -3,15 +3,19 @@ import { MapContainer, TileLayer, Circle, Marker, Popup, useMap } from 'react-le
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
-const TrafficMap = ({ trafficData, animalAttackData, constructionData }) => {
-  const [userLocation, setUserLocation] = useState(null);
+// Custom hook to set map view to user location
+const SetViewOnLocation = ({ location }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (map && location) {
+      map.setView(location, 13);
+    }
+  }, [map, location]);
+  return null;
+};
 
-  // Custom hook to set map view to user location
-  const SetViewOnLocation = ({ location }) => {
-    const map = useMap();
-    map.setView(location, 13);
-    return null;
-  };
+const AlertMap = ({ trafficData = [], animalAttackData = [], constructionData = [] }) => {
+  const [userLocation, setUserLocation] = useState(null);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -29,7 +33,7 @@ const TrafficMap = ({ trafficData, animalAttackData, constructionData }) => {
 
   // Define a custom icon for the user's location
   const userIcon = new L.Icon({
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/9356/9356230.png', // Replace with the path to your user icon image
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/9356/9356230.png',
     iconSize: [32, 32],
     iconAnchor: [16, 32],
     popupAnchor: [0, -32],
@@ -44,6 +48,7 @@ const TrafficMap = ({ trafficData, animalAttackData, constructionData }) => {
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
+
       {userLocation && <SetViewOnLocation location={userLocation} />}
       
       {/* Traffic Alert Circles */}
@@ -51,8 +56,8 @@ const TrafficMap = ({ trafficData, animalAttackData, constructionData }) => {
         <Circle
           key={idx}
           center={[traffic.latitude, traffic.longitude]}
-          radius={100} // Adjust radius based on severity
-          color="red" // Traffic alert color
+          radius={100} 
+          color="red" 
           fillOpacity={0.5}
         />
       ))}
@@ -62,8 +67,8 @@ const TrafficMap = ({ trafficData, animalAttackData, constructionData }) => {
         <Circle
           key={idx}
           center={[attack.latitude, attack.longitude]}
-          radius={100} // Fixed radius
-          color="darkblue" // Use hex color code
+          radius={100} 
+          color="darkblue" 
           fillOpacity={0.5}
         />
       ))}
@@ -73,8 +78,8 @@ const TrafficMap = ({ trafficData, animalAttackData, constructionData }) => {
         <Circle
           key={idx}
           center={[construct.latitude, construct.longitude]}
-          radius={100} // Fixed radius
-          color="darkgreen" // Use hex color code
+          radius={100} 
+          color="darkgreen" 
           fillOpacity={0.5}
         />
       ))}
@@ -89,4 +94,4 @@ const TrafficMap = ({ trafficData, animalAttackData, constructionData }) => {
   );
 };
 
-export default TrafficMap;
+export default AlertMap;

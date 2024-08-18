@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import TrafficMap from './TrafficMap'; // Ensure you have this component defined
+import AlertMap from './AlertMap';
+import NavBar from './NavBar';
 
 const AlertSystem = () => {
     const [userLocation, setUserLocation] = useState(null);
+    const [selectedView, setSelectedView] = useState('all');
+
     const [geofences, setGeofences] = useState([
-        { latitude: 10.8505, longitude: 76.2711, radius: 1000, notified: false },
-        { latitude: 10.8605, longitude: 76.2811, radius: 1000, notified: false },
-        { latitude: 10.142303718438948, longitude: 76.2241480776085, radius: 1000, notified: false },
-        { latitude: 10.079115614479509, longitude: 76.27394290945765, radius: 1000, notified: false },
+        { latitude: 10.8505, longitude: 76.2711, radius: 1000, type: 'traffic', notified: false },
+        { latitude: 10.8605, longitude: 76.2811, radius: 1000, type: 'traffic', notified: false },
+        { latitude: 10.8555, longitude: 76.2601, radius: 1000, type: 'animal', notified: false },
+        { latitude: 10.142303718438948, longitude: 76.2241480776085, radius: 1000, type: 'animal', notified: false },
+        { latitude: 10.079115614479509, longitude: 76.27394290945765, radius: 1000, type: 'animal', notified: false },
+        { latitude: 10.8555, longitude: 76.2701, radius: 1000, type: 'construction', notified: false },
+        { latitude: 10.8655, longitude: 76.2751, radius: 1000, type: 'construction', notified: false },
     ]);
 
     useEffect(() => {
@@ -19,15 +25,13 @@ const AlertSystem = () => {
             }
         };
 
-        // Function to check if user is within any geofence
         const checkGeofences = () => {
             if (userLocation) {
                 geofences.forEach((geofence, index) => {
                     const distance = getDistance(userLocation, geofence);
-                    console.log(`Checking geofence at (${geofence.latitude}, ${geofence.longitude}) with radius ${geofence.radius}: Distance to user is ${distance} meters`);
                     if (distance < geofence.radius) {
                         if (!geofence.notified) {
-                            new Notification('You are entering an alert zone!');
+                            new Notification(`You are entering a ${geofence.type} alert zone!`);
                             const updatedGeofences = [...geofences];
                             updatedGeofences[index].notified = true;
                             setGeofences(updatedGeofences);
@@ -43,7 +47,6 @@ const AlertSystem = () => {
             }
         };
 
-        // Function to calculate distance between two coordinates
         const getDistance = (location1, location2) => {
             const R = 6371e3; // Earth's radius in meters
             const lat1 = location1.latitude * Math.PI / 180;
@@ -59,7 +62,6 @@ const AlertSystem = () => {
             return R * c; // Distance in meters
         };
 
-        // Function to track user location
         const trackUserLocation = () => {
             if ('geolocation' in navigator) {
                 navigator.geolocation.watchPosition((position) => {
@@ -79,28 +81,45 @@ const AlertSystem = () => {
 
         askPermission();
         trackUserLocation();
-    }, [userLocation, geofences]); // Including geofences to handle updates
+    }, [userLocation, geofences]);
 
     const trafficData = [
-        { latitude: 10.8505, longitude: 76.2711 },
-        { latitude: 10.8605, longitude: 76.2811 },
+        { latitude: 10.8505, longitude: 76.2711, type: 'traffic' },
+        { latitude: 10.8605, longitude: 76.2811, type: 'traffic' },
     ];
 
     const animalAttackData = [
-        { latitude: 10.8555, longitude: 76.2601 },
-        { latitude: 10.142303718438948, longitude: 76.2241480776085 },
-        { latitude: 10.079115614479509, longitude: 76.27394290945765 },
+        { latitude: 10.8555, longitude: 76.2601, type: 'animal' },
+        { latitude: 10.142303718438948, longitude: 76.2241480776085, type: 'animal' },
+        { latitude: 10.079115614479509, longitude: 76.27394290945765, type: 'animal' },
     ];
 
     const constructionData = [
-        { latitude: 10.8555, longitude: 76.2701 },
-        { latitude: 10.8655, longitude: 76.2751 },
+        { latitude: 10.8555, longitude: 76.2701,type: 'construction' },
+        { latitude: 10.8655, longitude: 76.2751,type: 'construction' },
     ];
+
+    // Filter data based on selected view
+    const getFilteredData = () => {
+        switch (selectedView) {
+            case 'traffic':
+                return { trafficData };
+            case 'animal':
+                return { animalAttackData };
+            case 'construction':
+                return { constructionData };
+            case 'all':
+            default:
+                return { trafficData, animalAttackData, constructionData };
+        }
+    };
+
+    const filteredData = getFilteredData();
 
     return (
         <div>
-            <h1><center>Alert-Map</center></h1>
-            <TrafficMap trafficData={trafficData} animalAttackData={animalAttackData} constructionData={constructionData} />
+            <NavBar setSelectedView={setSelectedView} />
+            <AlertMap {...filteredData} />
         </div>
     );
 };
