@@ -9,6 +9,7 @@ const AlertSystem = () => {
     const [geofences, setGeofences] = useState([
         { latitude: 10.8505, longitude: 76.2711, radius: 1000, type: 'traffic', notified: false },
         { latitude: 10.8605, longitude: 76.2811, radius: 1000, type: 'traffic', notified: false },
+        { latitude: 10.237577700953553, longitude: 76.41175775034719,radius: 1000, type: 'construction' , notified: false },
         { latitude: 10.8555, longitude: 76.2601, radius: 1000, type: 'animal', notified: false },
         { latitude: 10.142303718438948, longitude: 76.2241480776085, radius: 1000, type: 'animal', notified: false },
         { latitude: 10.079115614479509, longitude: 76.27394290945765, radius: 1000, type: 'animal', notified: false },
@@ -99,6 +100,7 @@ const AlertSystem = () => {
     const constructionData = [
         { latitude: 10.8555, longitude: 76.2701,type: 'construction' },
         { latitude: 10.8655, longitude: 76.2751,type: 'construction' },
+        { latitude: 10.237577700953553, longitude: 76.41175775034719,type: 'construction' },
     ];
 
     // Filter data based on selected view
