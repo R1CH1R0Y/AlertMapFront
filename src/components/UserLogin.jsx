@@ -10,7 +10,6 @@ const UserLogin = () => {
     const [input, setInput] = React.useState({
         name: "",
         email: "",
-        phone: "",
         password: "",
         cpswd: "" // Confirm password
     });
@@ -57,7 +56,6 @@ const UserLogin = () => {
                         alert("Registered successfully!");
                         setInput({
                             name: "",
-                            phone: "",
                             email: "",
                             password: "",
                             cpswd: ""
@@ -67,7 +65,6 @@ const UserLogin = () => {
                         alert("Email ID already exists!!!");
                         setInput({
                             name: "",
-                            phone: "",
                             email: "",
                             password: "",
                             cpswd: ""

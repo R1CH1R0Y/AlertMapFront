@@ -31,7 +31,6 @@ const AlertMap = ({ trafficData = [], animalAttackData = [], constructionData = 
     }
   }, []);
 
-  // Define a custom icon for the user's location
   const userIcon = new L.Icon({
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/9356/9356230.png',
     iconSize: [32, 32],
